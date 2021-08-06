@@ -11,14 +11,14 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'    # Suppress TensorFlow logging
 tf.get_logger().setLevel('ERROR')           # Suppress TensorFlow logging (2)
 
 # Load pipeline config and build a detection model
-PATH_TO_CFG = 'C:\\Users\\lucam\\Documents\\Tensorflow\\data\\models\\ssd_resnet101_v1_fpn_640x640_coco17_tpu-8\\pipeline.config'
+PATH_TO_CFG = 'C:\\Users\\lucam\\Documents\\Tensorflow\\data\\models\\ssd_mobilenet_v2_320x320_coco17_tpu-8\\pipeline.config'
 print(PATH_TO_CFG)
 configs = config_util.get_configs_from_pipeline_file(PATH_TO_CFG)
 model_config = configs['model']
 detection_model = model_builder.build(model_config=model_config, is_training=False)
 
 # Restore checkpoint
-PATH_TO_CKPT = 'C:\\Users\\lucam\\Documents\\Tensorflow\\data\\models\\ssd_resnet101_v1_fpn_640x640_coco17_tpu-8\\checkpoint\\'
+PATH_TO_CKPT = 'C:\\Users\\lucam\\Documents\\Tensorflow\\data\\models\\ssd_mobilenet_v2_320x320_coco17_tpu-8\\checkpoint\\'
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
 ckpt.restore(os.path.join(PATH_TO_CKPT, 'ckpt-0')).expect_partial()
 
@@ -32,7 +32,7 @@ def detect_fn(image):
 
     return detections, prediction_dict, tf.reshape(shapes, [-1])
 
-PATH_TO_LABELS = 'C:\\Users\\lucam\\Documents\\Tensorflow\\data\\models\\ssd_resnet101_v1_fpn_640x640_coco17_tpu-8\\mscoco_label_map.pbtxt'
+PATH_TO_LABELS = 'C:\\Users\\lucam\\Documents\\Tensorflow\\data\\models\\ssd_mobilenet_v2_320x320_coco17_tpu-8\\mscoco_label_map.pbtxt'
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS,
                                                                     use_display_name=True)
 
