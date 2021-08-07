@@ -66,5 +66,7 @@ while True:
     if cv2.waitKey(25) & 0xFF == ord('q'):
         break
 
+
+print(detections['detection_scores'][0])
 cap.release()
 cv2.destroyAllWindows()
