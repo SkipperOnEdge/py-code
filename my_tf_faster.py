@@ -43,6 +43,10 @@ while True:
     # Read frame from camera
     ret, image_np = cap.read()
     image_np_expanded = np.expand_dims(image_np, axis=0)
+    height, width, channel = image_np.shape
+    #print('height and width:')
+    #print(height)
+    #print(width)
 
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
     detections, predictions_dict, shapes = detect_fn(input_tensor)
@@ -60,13 +64,22 @@ while True:
           max_boxes_to_draw=200,
           min_score_thresh=.65,
           agnostic_mode=False)
+    y = (detections['detection_boxes'][0][0][0].numpy() + detections['detection_boxes'][0][0][2].numpy())* 480 / 2
+    x = (detections['detection_boxes'][0][0][1].numpy() + detections['detection_boxes'][0][0][3].numpy())* 640 / 2
+    tx = 640/2
+    ty = 480/2
+    cv2.circle(image_np_with_detections,(int(x), int(y)), 10, (0,0,255), -1 )
+    cv2.circle(image_np_with_detections,(int(tx), int(ty)), 10, (0,0,255), -1 )
+    print('x offset: ' + str(tx - x))
+    print('y offset: ' + str(ty - y))
 
     cv2.imshow('object detection', cv2.resize(image_np_with_detections, (800, 600)))
 
     if cv2.waitKey(25) & 0xFF == ord('q'):
         break
 
-
-print(detections['detection_scores'][0])
+#print(detections['detection_boxes'][0].numpy())
+#print(detections['detection_scores'][0].numpy())
+#print(detections['detection_classes'][0].numpy())
 cap.release()
 cv2.destroyAllWindows()
