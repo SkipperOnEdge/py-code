@@ -3,8 +3,9 @@ import cv2
 import matplotlib.pyplot as plt
 
 cap = cv2.VideoCapture(0)
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_upperbody.xml')
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+print("started")
 
 while True:
     ret, frame = cap.read()
@@ -25,3 +26,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+print("ended")
